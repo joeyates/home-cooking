@@ -2,29 +2,42 @@
 
 1. Environment setup:
 
- $ GIT_USER=joeyates
- $ GIT_REPO=home-cooking
- $ HOME_COOKING_HOST=the.remote.host
- $ HOME_COOKING_KEYNAME=.ssh/id_$HOME_COOKING_HOST
- $ DATA_BAG_KEY=${HOME_COOKING_HOST}_data_bag_key
+# HOME_COOKING_USER must have sudo rights
+export HOME_COOKING_USER=user
+export HOME_COOKING_HOST=the.remote.host
 
-Create a keypair:
- $ ssh-keygen -f $HOME_COOKING_KEYNAME -N ''
- 
-Create a key for encryptiing data bags:
- $ openssl rand -base64 512 | tr -d '\r\n' > $DATA_BAG_KEY
+export GIT_USER=joeyates
+export GIT_REPO=home-cooking
+export HOME_COOKING_KEYNAME=id_$HOME_COOKING_HOST
+export HOME_COOKING_KEYNAME_PATH=~/.ssh/$HOME_COOKING_KEYNAME
 
-2. Setup public key authentication
+export HOME_COOKING_DATA_BAG_KEY=.${HOME_COOKING_HOST}_data_bag_key
+export HOME_COOKING_DATA_BAG_KEY_PATH=~/$HOME_COOKING_DATA_BAG_KEY
 
- $ ssh root@$HOST "mkdir -p /root/.ssh && chmod 0700 /root/.ssh"
- $ ssh-copy-id -i $KEYNAME root@$HOST
+2. Setup Passwordless Access to root
+i. Create a keypair:
+ssh-keygen -f $HOME_COOKING_KEYNAME_PATH -N ''
+
+ii. Install public key
+ssh-copy-id -i $HOME_COOKING_KEYNAME_PATH $HOME_COOKING_USER@$HOME_COOKING_HOST
+scp $HOME_COOKING_KEYNAME_PATH.pub $HOME_COOKING_USER@$HOME_COOKING_HOST:
+ssh -t $HOME_COOKING_USER@$HOME_COOKING_HOST "sudo sh -c 'cd /root && mkdir -p .ssh && chmod 0700 .ssh && touch .ssh/authorized_keys && chmod 0600 .ssh/authorized_keys && cat /home/$HOME_COOKING_USER/$HOME_COOKING_KEYNAME.pub >> .ssh/authorized_keys' && rm ~/$HOME_COOKING_KEYNAME.pub"
 
 3. Install ruby and chef-solo
 
- $ cap chef:bootstrap
+gem install capistrano
+cap chef:bootstrap
 
-4. Run chef-solo
+4. Project setup: data bag key
+ 
+openssl rand -base64 512 | tr -d '\r\n' > $HOME_COOKING_DATA_BAG_KEY_PATH
+chmod 0600 $HOME_COOKING_DATA_BAG_KEY_PATH
 
+5. Edit secret data
+
+6. Run chef-solo
+
+TODO: create local tarball, upload it and use that
  $ cap chef:run_recipes
 
 =end
@@ -36,35 +49,35 @@ namespace :chef do
 
   desc 'Install minimal setup on remote machine'
   task :bootstrap, :roles => :target do
-    raise "DATA_BAG_KEY not set" unless ENV[ 'DATA_BAG_KEY' ]
-    raise "DATA_BAG_KEY file does not exist" unless File.exist?( ENV[ 'DATA_BAG_KEY' ] )
-    install_dependencies
-    ruby193
-    gems
+    raise "HOME_COOKING_DATA_BAG_KEY_PATH not set" unless ENV[ 'HOME_COOKING_DATA_BAG_KEY_PATH' ]
+    raise "HOME_COOKING_DATA_BAG_KEY_PATH file does not exist" unless File.exist?( ENV[ 'HOME_COOKING_DATA_BAG_KEY_PATH' ] )
+    update_packages
+    install_build_tools
+    install_ruby
+    install_gems
     install_chef_solo
   end
 
   desc 'Run chef-solo'
   task :run_recipes, :roles => :target do
-    run 'chef-solo -r https://github.com/#{github_user}/#{github_repo}/raw/master/chef-solo.tar.gz'
+    run "chef-solo -r https://github.com/#{github_user}/#{github_repo}/raw/master/chef-solo.tar.gz"
   end
 
-  task :install_dependencies do
-    run "apt-get update"
-    run "apt-get install -y libreadline5-dev libssl-dev libsqlite3-dev zlib1g-dev libyaml-dev curl"
+  task :update_packages do
+    run 'apt-get update'
   end
 
-  task :ruby193 do
-    directory '/root/build'
-    run 'cd /root/build && curl -O -# http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p0.tar.gz'
-    run 'cd /root/build && tar xf ruby-1.9.3-p0.tar.gz'
-    run 'cd /root/build/ruby-1.9.3-p0 && ./configure --prefix=/usr'
-    run 'cd /root/build/ruby-1.9.3-p0 && make'
-    run 'cd /root/build/ruby-1.9.3-p0 && make install'
-    run 'rm -rf /root/build'
+  task :install_ruby do
+    # oneiric has ruby 1.9.2
+    run 'apt-get install -y ruby1.9.2-full gcc'
+    # packages < oneiric: libreadline6-dev libssl-dev libsqlite3-dev zlib1g-dev libyaml-dev curl
   end
 
-  task :gems do
+  task :install_build_tools do
+    run 'apt-get install -y gcc make'
+  end
+
+  task :install_gems do
     put gemrc, '/root/.gemrc'
     run 'gem install chef'
   end
@@ -74,7 +87,7 @@ namespace :chef do
     directory '/var/chef-solo'
     put etc_chef_solo_rb, '/etc/chef/solo.rb'
     put etc_chef_host_json, '/etc/chef/host.json'
-    put File.read( ENV[ 'DATA_BAG_KEY' ] ), '/root/home_cooking_data_bag_key'
+    put File.read( ENV[ 'HOME_COOKING_DATA_BAG_KEY_PATH' ] ), '/root/home_cooking_data_bag_key'
     run 'chmod 0600 /root/home_cooking_data_bag_key'
   end
 
@@ -92,8 +105,9 @@ install: --no-rdoc --no-ri
 end
 
 def etc_chef_solo_rb
-  github_user = ENV[ 'GIT_USER' ] || raise "Set GIT_USER"
-  github_repo = ENV[ 'GIT_REPO' ] || raise "Set GIT_REPO"
+  github_user = ENV[ 'GIT_USER' ] or raise "Set GIT_USER"
+  github_repo = ENV[ 'GIT_REPO' ] or raise "Set GIT_REPO"
+
   <<-EOT
 file_cache_path "/var/chef-solo"
 cookbook_path "/var/chef-solo/cookbooks"
@@ -109,7 +123,7 @@ def etc_chef_antani_json
 {
  "name": "#{home_cooking_host}",
  "description": "#{home_cooking_host} VPS",
- "run_list": [ "recipe[home-cooking]" ]
+ "run_list": [ "recipe[user]" ]
 }
   EOT
 end
