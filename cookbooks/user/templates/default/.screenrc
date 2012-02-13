@@ -1,0 +1,22 @@
+backtick 1 0 1 git-current-branch
+
+# See man screen, section 'STRING ESCAPES"
+hardstatus alwayslastline "%{.wk} %-w%{.bw}%n %t%{-}%+w %{.wb} %-50= git:%1` %-30= %H %= %{.wk} %c"
+
+msgwait 1
+defscrollback 1000
+vbell off
+startup_message off
+# Ensure backspace gets produced under xfce-term
+bindkey -d ^@ stuff ^?
+bind x
+bind ^x
+
+# Use C-z instead of C-a as this makes more sense for Emacs
+escape ^zz
+
+screen -t bash    0
+screen -t console 1
+screen -t server  2
+screen -t log     3
+select 0

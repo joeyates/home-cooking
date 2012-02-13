@@ -1,0 +1,54 @@
+[branch]
+	autosetupmerge = true
+[push]
+  default = current
+[core]
+  excludesfile = "~/.gitexcludes"
+[user]
+  name = Joe Yates
+  email = joe.g.yates@gmail.com
+[branch "master"]
+  remote = origin
+  merge = refs/heads/master
+[color]
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+  branch-point = !sh -c 'git rev-list $0...$1 | tail -n 1'
+  branches-containing = branch --contains
+  blame-line = !sh -c 'git blame -L $1,$1 $0'
+  a          = add --interactive
+  cm         = commit
+  cmm        = commit -m
+  cmam       = commit -a -m
+  co         = checkout
+  d          = diff
+  dc         = diff --color-words
+  # di means 'diff index'
+  di         = diff --cached
+  l          = log
+  ls         = ls-files
+  m          = merge
+  mm         = merge master
+  p          = pull
+  ps         = push
+  s          = status
+  stash-diff = !sh -c 'git stash show stash@{$0} --patience'
+
+# Alias in bashrc:
+# alias g='git'
+# Added to git-completion.bash:
+# complete -o bashdefault -o default -o nospace -F _git g 2>/dev/null \
+#        || complete -o default -o nospace -F _git g

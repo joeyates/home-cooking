@@ -1,5 +1,8 @@
-template "/home/#{ node[:user][:name] }/.zshrc" do
-  source 'zshrc'
-  mode '0644'
+# TODO: Manage SHA-1s
+HOME="/home/#{ node[:user][:name] }"
+%w(.bashrc .gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each | rc |
+  template "#{ HOME }/#{ rc }" do
+    mode '0644'
+  end
 end
 
