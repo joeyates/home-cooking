@@ -1,2 +1,2 @@
-set[ :user ][ :name ]          = 'joe'
+set[ :user ][ :name ]          = 'user'
 
