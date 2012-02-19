@@ -1,7 +1,5 @@
 #!/bin/sh
 
-sudo sh -c 'apt-get update'
-sudo sh -c 'aptitude install zsh chef git-core'
 mkdir -p .install
 cd .install
 rm -rf home-cooking

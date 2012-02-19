@@ -3,17 +3,14 @@ This repo contains chef recipes I use to set up my personal computers.
 Setup
 =====
 
-export HOME_COOKING_HOST=...
+In the script names 'remote_' indicates a script run remotely,
+i.e. not from the host onto which we are installing.
 
-1. Create user 'joe'
+1. Create user:
 
-SSH to host
-
-  $ sudo su -
-  # useradd --create-home --shell=/usr/bin/zsh --groups=admin joe
-  # passwd joe
+  $ bin/remote_user_create.sh
 
 2. Install
 
-  $ ./bootstrap.sh 
+  $ bin/remote_bootstrap.sh 
 
