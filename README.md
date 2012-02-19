@@ -1,5 +1,11 @@
 This repo contains chef recipes I use to set up my personal computers.
 
+Stages
+
+- Create the desired user (for now 'joe' only),
+- Install dependencies for chef,
+- Run chef scripts.
+
 Setup
 =====
 
