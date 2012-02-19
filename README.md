@@ -6,6 +6,10 @@ Setup
 In the script names 'remote_' indicates a script run remotely,
 i.e. not from the host onto which we are installing.
 
+1. Setup
+
+  $ . bin/remote_setup_environment.sh
+
 1. Create user:
 
   $ bin/remote_user_create.sh

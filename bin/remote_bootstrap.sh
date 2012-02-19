@@ -1,4 +1,8 @@
-#!/bin/sh
+if [[ -z "$HOME_COOKING_HOST" ]]; then
+  echo "First run:
+. bin/remote_setup_environment.sh"
+  exit
+fi
 
 BIN_PATH=`dirname $0`
 
