@@ -9,18 +9,18 @@ Stages
 Setup
 =====
 
-In the script names 'remote_' indicates a script run remotely,
+In the script names 'remote\_' indicates a script run remotely,
 i.e. not from the host onto which we are installing.
 
 1. Setup
 
-  $ . bin/remote_setup_environment.sh
+  $ . bin/remote\_setup\_environment.sh
 
-1. Create user:
+2. Create user:
 
-  $ bin/remote_user_create.sh
+  $ bin/remote\_user\_create.sh
 
-2. Install
+3. Install
 
-  $ bin/remote_bootstrap.sh 
+  $ bin/remote\_bootstrap.sh
 
