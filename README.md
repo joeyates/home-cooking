@@ -6,13 +6,12 @@ Stages
 - Install dependencies for chef,
 - Run chef scripts.
 
-Setup
-=====
+# Usage
 
 In the script names 'remote\_' indicates a script run remotely,
 i.e. not from the host onto which we are installing.
 
-1. Setup
+## Environment Setup
 
 Set the following environment variables:
 
@@ -20,21 +19,21 @@ Set the following environment variables:
 * HOME\_COOKING\_USER: an existing user on the remote host which has sudo permissions
 
 ```shell
-$ . bin/remote\_setup\_environment.sh
+$ . bin/remote_setup_environment.sh
 Host address/name: example.com
 Existing user: user
 ```
 
-2. Install dependencies
+## Install dependencies
 
 ```shell
-$ bin/remote\_install\_dependencies.sh
+$ bin/remote_install_dependencies.sh
 ```
 
-3. Create my user:
+## Create user
 
 ```shell
-$ bin/remote\_create\_user.sh
+$ bin/remote_create_user.sh
 user@example.com's password:
 [sudo] password for user:
 Set password for joe
@@ -44,12 +43,12 @@ passwd: password updated successfully
 Connection to example.com closed.
 ```
 
-4. Install
+## Install
 
 Run chef-solo on the host.
 
 ```shell
-$ bin/remote\_bootstrap.sh
+$ bin/remote_bootstrap.sh
 joe@example.com's password: 
 ...
 joe@example.com's password: 
