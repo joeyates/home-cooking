@@ -51,7 +51,9 @@ compinit
 
 ########################
 # source computer-specific configurations
-for i in ~/.zshrc-*(.); . $i
+if [ ${#$(print .zsh-*(.N))} -gt 0 ]; then
+  for i in ~/.zshrc-*(.); . $i
+fi
 
 ########################
 # aliases
