@@ -4,6 +4,7 @@ PATH=~/bin:/usr/local/bin:$PATH
 
 #######################
 # look
+# in prompt, show (at most) last three directories of path
 PS1="%F{blue}%B%3d>%f%b"
 
 #######################
@@ -55,6 +56,7 @@ alias la='ls -lA'
 # various functions
 function f() { find -iname "*$1*"; }
 function jgy_screen_precmd() {
+  # Keep screen up-to-date on the current directory
   if [[ "$TERM" == 'screen' ]] then
     screen -X chdir "`pwd`"
   fi
