@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+lib_directory = File.expand_path( '../lib', File.dirname( __FILE__ ) )
+$LOAD_PATH.unshift( lib_directory )
+
+require 'home_cooking'
+include HomeCooking
+
+# Get info from user
+host                   = ask( 'Hostname (or IP): ' )
+existing_user          = ask( 'Existing user: ' )
+existing_user_password = ask_password("Password for '#{ existing_user }': ")
+new_user               = ask( 'New user: ' )
+new_user_password      = ask_password("Password for '#{ new_user }': ")
+confirm_password       = ask_password("Confirm password for '#{ new_user }': ")
+
+if new_user_password != confirm_password
+  abort "Passwords for #{ new_user } do not match"
+end
+
+session = HomeCooking::Remote::Session.new( host, existing_user, existing_user_password )
+session.sudo 'apt-get update'
+session.sudo 'aptitude -y install zsh chef git-core'
+session.sudo "useradd --create-home --shell=/usr/bin/zsh --groups=admin #{ new_user }"
+session.sudo 'passwd joe', { 'Enter new UNIX password' => new_user_password, 'Retype new UNIX password' => new_user_password }
+session.close!
+
+new_user_session = HomeCooking::Remote::Session.new( host, new_user, new_user_password )
+new_user_session.run  'mkdir -p .install'
+new_user_session.run  'cd .install && rm -rf home-cooking'
+new_user_session.run  'cd .install && git clone git://github.com/joeyates/home-cooking.git'
+new_user_session.sudo 'sh -c "cd .install/home-cooking && chef-solo -c chef-solo.rb -j attributes.js -u root"'
+new_user_session.close!
+
+puts "Installation complete!"
+
