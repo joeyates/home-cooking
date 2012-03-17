@@ -1,4 +1,5 @@
 require 'home_cooking/remote/session'
+require 'home_cooking/file'
 
 module HomeCooking
 

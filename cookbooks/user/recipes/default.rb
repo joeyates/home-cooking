@@ -14,10 +14,11 @@ HOME = "/home/#{ node[:user][:name] }"
   end
 
   file = HomeCooking::File.new( destination )
-  if file.modified?
+  if ! file.stamped?
+    puts "File '#{ destination }' is not stamped"
+    file.stamp!
+  elsif file.modified?
     puts "File '#{ destination }' has been modified"
-  else
-    file.stamp! unless file.stamped?
   end
 end
 
