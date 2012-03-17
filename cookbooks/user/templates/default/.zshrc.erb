@@ -57,7 +57,7 @@ alias la='ls -lA'
 function f() { find -iname "*$1*"; }
 function jgy_screen_precmd() {
   # Keep screen up-to-date on the current directory
-  if [[ "$TERM" == 'screen' ]] then
+  if [[ "$TERMCAP" =~ 'screen' ]] then
     screen -X chdir "`pwd`"
   fi
 }
