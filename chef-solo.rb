@@ -1,3 +1,3 @@
-file_cache_path '/home/joe/.install'
-cookbook_path '/home/joe/.install/home-cooking/cookbooks'
+file_cache_path '/home/joe/.home-cooking'
+cookbook_path '/home/joe/.home-cooking/home-cooking/cookbooks'
 

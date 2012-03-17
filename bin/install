@@ -26,10 +26,10 @@ session.sudo 'passwd joe', { 'Enter new UNIX password' => new_user_password, 'Re
 session.close!
 
 new_user_session = HomeCooking::Remote::Session.new( host, new_user, new_user_password )
-new_user_session.run  'mkdir -p .install'
-new_user_session.run  'cd .install && rm -rf home-cooking'
-new_user_session.run  'cd .install && git clone git://github.com/joeyates/home-cooking.git'
-new_user_session.sudo 'sh -c "cd .install/home-cooking && chef-solo -c chef-solo.rb -j attributes.js -u root"'
+new_user_session.run  'mkdir -p .home-cooking'
+new_user_session.run  'cd .home-cooking && rm -rf home-cooking'
+new_user_session.run  'cd .home-cooking && git clone git://github.com/joeyates/home-cooking.git'
+new_user_session.sudo 'sh -c "cd .home-cooking/home-cooking && chef-solo -c chef-solo.rb -j attributes.js -u root"'
 new_user_session.close!
 
 puts "Installation complete!"
