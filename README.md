@@ -9,6 +9,7 @@ $ bundle install
 ```
 
 If you do not have bundler:
+
 ```shell
 $ (sudo) gem install net-ssh
 ```
