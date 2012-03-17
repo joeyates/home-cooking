@@ -3,10 +3,6 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
-if [ -f ~/.bashrc_ticketsolve ]; then
-  . ~/.bashrc_ticketsolve
-fi
-
 ######################################################
 # Common
 alias mv='mv -i'
@@ -16,30 +12,23 @@ alias ll='ls -l'
 alias la='ls -lA'
 alias lt='ls -lrt'
 export GREP_COLOR=4 # Underline found text
-alias gp='ack-grep -i'
-alias ddiff='diff -qr' # Compare directoies, reporting differences file by file.
+alias ddiff='diff -qr' # Compare directories, reporting differences file by file.
 alias rake='rake -sN'
 alias g='git'
-function f() { find -iname "*$1*"; }
-
-######################################################
-# Processes
-# Show all processes and commands
-alias psl='ps ax -o pid,command -ww'
-# Find matching processes 
-alias psgrep='psl | grep'
+function f() { find $2 -iname "*$1*"; }
+alias v='vimx'
 
 ######################################################
 # Exports
 export PS1='\[\e[1;34m\]${PWD}>\[\e[0m\]'
-export FLEX_HOME=/Applications/Adobe\ Flex\ Builder\ 3/sdks/3.2.0
-export PATH=~/bin:$PATH:/sbin:$FLEX_HOME/bin
+export PATH=~/bin:./bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 export INPUTRC=~/.inputrc
-export HISTIGNORE="&"
+export HISTIGNORE="&:[ ]*" # Exclude repeats, commands starting with space
 export HISTCONTROL=erasedups
-export HISTFILESIZE=100000
+unset HISTFILESIZE
+export HISTFILESIZE
 export HOSTNAME
-export EDITOR=~/bin/em
+export EDITOR=vim
 
 # http://wiki.bash-hackers.org/internals/shell_options
 shopt -s histappend
@@ -52,49 +41,21 @@ shopt -s checkhash                        # Check whether programs saved in path
 # shopt -s dirspell                         # Correct spelling of directory names
 # shopt -s globstar
 
-case $TERM in
-  xterm*)
-    export PROMPT_COMMAND='history -a && echo -ne "\033]0;${PWD}\007"'
-    ;;
-  *)
-    export PROMPT_COMMAND=''
-    ;;
-esac
-export XDG_DATA_HOME=~/.local
-
 function set_screen_path() {
   screen -X chdir "`pwd`"
 }
 
 case $TERM in
-screen*)
-  PROMPT_COMMAND=set_screen_path
-  ;;
+  xterm*)
+    export PROMPT_COMMAND='history -a;echo -ne "\033]0;${PWD}\007"'
+    ;;
+  screen*)
+    export PROMPT_COMMAND='set_screen_path;history -a'
+    ;;
+  *)
+    export PROMPT_COMMAND=''
+    ;;
 esac
-
-# Start a screen session
-function scr() {
-  ScreenSessions=$(screen -ls  | grep -E '(Attached|Detached)')
-  ScreenSessionCount=$(echo "$ScreenSessions" | grep -E '.' | wc -l | grep -oE '[0-9]+')
-  if [ "x$ScreenSessionCount" == 'x0' ]; then
-    # Start a screen session
-    if [ "x$SSH_TTY" == "x" ]; then
-      screen
-    else
-      screen -c $HOME/.screenrc-remote
-    fi
-  else
-    if [ "x$ScreenSessionCount" == 'x1' ]; then
-      SessionStatus=$(echo "$ScreenSessions" | grep -oE 'Detached')
-      if [ "x$SessionStatus" == 'xDetached' ]; then
-        # Reattach to detached screen session
-        screen -R
-      fi
-    else
-      echo "$ScreenSessionCount screen sessions running."
-    fi
-  fi
-}
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
