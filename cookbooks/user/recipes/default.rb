@@ -8,6 +8,7 @@ HOME = "/home/#{ node[:user][:name] }"
 %w(.bashrc .gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each do | rc |
   destination = "#{ HOME }/#{ rc }"
   template destination do
+    action :create_if_missing
     mode '0644'
     owner 'joe'
     group 'joe'
