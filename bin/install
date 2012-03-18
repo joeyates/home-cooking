@@ -6,16 +6,22 @@ $LOAD_PATH.unshift( lib_directory )
 require 'home_cooking'
 include HomeCooking
 
-# Get info from user
-host                   = ask( 'Hostname (or IP): ' )
-existing_user          = ask( 'Existing user: ' )
-existing_user_password = ask_password("Password for '#{ existing_user }': ")
-new_user               = ask( 'New user: ' )
-new_user_password      = ask_password("Password for '#{ new_user }': ")
-confirm_password       = ask_password("Confirm password for '#{ new_user }': ")
+# Get info from environment/user
+host                   = ENV[ 'HOME_COOKING_HOST' ]                   || ask( 'Hostname (or IP): ' )
+existing_user          = ENV[ 'HOME_COOKING_EXISTING_USER' ]          || ask( 'Existing user: ' )
+existing_user_password = ENV[ 'HOME_COOKING_EXISTING_USER_PASSWORD' ] || ask_password( "Password for '#{ existing_user }': " )
+new_user               = ENV[ 'HOME_COOKING_NEW_USER' ]               || ask( 'New user: ' )
+keys = ENV.keys.select{|k| k =~ /^HOME/ }
+keys.each{|k| puts "#{k} => #{ENV[k]}" }
+if ENV[ 'HOME_COOKING_NEW_USER_PASSWORD' ].nil?
+  new_user_password = ask_password( "Password for '#{ new_user }': " )
+  confirm_password  = ask_password( "Confirm password for '#{ new_user }': " )
 
-if new_user_password != confirm_password
-  abort "Passwords for #{ new_user } do not match"
+  if new_user_password != confirm_password
+    abort "Passwords for #{ new_user } do not match"
+  end
+else
+  new_user_password = ENV[ 'HOME_COOKING_NEW_USER_PASSWORD' ]
 end
 
 session = HomeCooking::Remote::Session.new( host, existing_user, existing_user_password )
