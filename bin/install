@@ -37,5 +37,5 @@ new_user_session.run  'cd .home-cooking && git clone git://github.com/joeyates/h
 new_user_session.sudo 'sh -c "cd .home-cooking/home-cooking && chef-solo -c chef-solo.rb -j attributes.js -u root"'
 new_user_session.close!
 
-puts "Installation complete!"
+puts 'Installation complete!'
 
