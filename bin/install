@@ -11,8 +11,6 @@ host                   = ENV[ 'HOME_COOKING_HOST' ]                   || ask( 'H
 existing_user          = ENV[ 'HOME_COOKING_EXISTING_USER' ]          || ask( 'Existing user: ' )
 existing_user_password = ENV[ 'HOME_COOKING_EXISTING_USER_PASSWORD' ] || ask_password( "Password for '#{ existing_user }': " )
 new_user               = ENV[ 'HOME_COOKING_NEW_USER' ]               || ask( 'New user: ' )
-keys = ENV.keys.select{|k| k =~ /^HOME/ }
-keys.each{|k| puts "#{k} => #{ENV[k]}" }
 if ENV[ 'HOME_COOKING_NEW_USER_PASSWORD' ].nil?
   new_user_password = ask_password( "Password for '#{ new_user }': " )
   confirm_password  = ask_password( "Confirm password for '#{ new_user }': " )
