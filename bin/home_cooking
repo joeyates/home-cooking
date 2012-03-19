@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+lib_directory = File.expand_path( '../lib', File.dirname( __FILE__ ) )
+$LOAD_PATH.unshift( lib_directory )
+
+require 'home_cooking'
+include HomeCooking
+
+HOME_DIRECTORY     = File.expand_path( '~' )
+COOKBOOK_DIRECTORY = File.expand_path( '../cookbooks/user', File.dirname( __FILE__ ) )
+TEMPLATE_DIRECTORY = File.join( COOKBOOK_DIRECTORY, 'templates', 'default' )
+
+def each_template
+  Dir.chdir( TEMPLATE_DIRECTORY )
+  Dir.glob( '*', File::FNM_DOTMATCH ) do | template |
+    next if ! File.file?( template )
+    file_name      = template.gsub( %r(.erb$), '' )
+    template_path  = File.join( TEMPLATE_DIRECTORY, template )
+    installed_path = "#{ HOME_DIRECTORY }/#{ file_name }"
+    yield template_path, installed_path
+  end
+end
+
+def check
+  each_template do | template_path, installed_path |
+    file = HomeCooking::File.new( installed_path )
+    if ! file.stamped?
+      puts "'#{ installed_path }' is not stamped"
+    elsif file.modified?
+      puts "'#{ installed_path }' modified:"
+      puts `diff -U 2 #{ template_path } #{ installed_path }`
+    end
+  end
+end
+
+def stamp
+  each_template do | template_path, installed_path |
+    file = HomeCooking::File.new( installed_path )
+    if ! file.stamped?
+      file.stamp!
+    end
+  end
+end
+
+case ARGV[ 0 ]
+when 'check'
+  check
+when 'stamp'
+  stamp
+end
