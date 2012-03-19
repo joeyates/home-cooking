@@ -43,7 +43,7 @@ compinit
 
 ########################
 # source computer-specific configurations
-if [ ${#$(print .zshrc_*(.N))} -gt 0 ]; then
+if [ ${#$(print ~/.zshrc_*(.N))} -gt 0 ]; then
   for i in ~/.zshrc_*(.); . $i
 fi
 
