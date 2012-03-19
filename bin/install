@@ -27,7 +27,7 @@ session.sudo 'apt-get update'
 session.sudo 'aptitude -y install zsh rubygems chef git-core'
 session.sudo 'gem install net-ssh'
 session.sudo "useradd --create-home --shell=/usr/bin/zsh --groups=admin #{ new_user }"
-session.sudo 'passwd joe', { 'Enter new UNIX password' => new_user_password, 'Retype new UNIX password' => new_user_password }
+session.sudo "passwd #{ new_user }", { '(Enter|Retype) new UNIX password' => new_user_password }
 session.close!
 
 new_user_session = HomeCooking::Remote::Session.new( host, new_user, new_user_password )
