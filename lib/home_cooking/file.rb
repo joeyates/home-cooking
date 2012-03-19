@@ -1,5 +1,4 @@
 require 'digest/sha1'
-require 'pp'
 
 module HomeCooking
 
@@ -18,8 +17,8 @@ module HomeCooking
       return true if i.nil?
 
       current_sha = @lines[ i ][ /^# #{ SHA1_STAMP } (.*)/, 1]
-      clean     = @lines.select { | line | line !~ STAMP_MATCH }
-      clean_sha = sha( clean.join )
+      clean      = @lines.select { | line | line !~ STAMP_MATCH }
+      clean_sha  = sha( clean.join )
 
       current_sha != clean_sha
     end
