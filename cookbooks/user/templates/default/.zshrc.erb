@@ -43,8 +43,8 @@ compinit
 
 ########################
 # source computer-specific configurations
-if [ ${#$(print .zsh-*(.N))} -gt 0 ]; then
-  for i in ~/.zshrc-*(.); . $i
+if [ ${#$(print .zshrc_*(.N))} -gt 0 ]; then
+  for i in ~/.zshrc_*(.); . $i
 fi
 
 ########################
@@ -52,6 +52,8 @@ fi
 alias ls='ls --color=auto'
 alias l='ls -l'
 alias la='ls -lA'
+alias v='vimx'
+alias g='git'
 
 # various functions
 function f() { find -iname "*$1*"; }
