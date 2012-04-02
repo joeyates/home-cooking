@@ -47,4 +47,9 @@ when 'check'
   check
 when 'stamp'
   stamp
+else
+  puts <<EOT
+Usage:
+ $ home-cooking [check|stamp]
+EOT
 end
