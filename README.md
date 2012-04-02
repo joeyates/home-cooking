@@ -1,6 +1,6 @@
 This repo contains chef recipes I use to set up my personal computers.
 
-# Usage
+# Install to a Remote Computer
 
 ## Dependencies
 
@@ -34,6 +34,6 @@ The above predefines the following:
 ## Install
 
 ```shell
-$ bin/install
+$ bin/push-install
 ```
 
