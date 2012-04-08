@@ -3,7 +3,7 @@ $LOAD_PATH.unshift( lib_directory )
 
 require 'home_cooking'
 
-HOME = "/home/#{ node[:user][:name] }"
+HOME = "/#{ node.user.home_root }/#{ node.user.name }"
 
 %w(.bashrc .gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each do | rc |
   destination = "#{ HOME }/#{ rc }"
