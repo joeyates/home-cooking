@@ -59,7 +59,7 @@ alias v='vimx'
 alias g='git'
 
 # various functions
-function f() { find -iname "*$1*"; }
+function f() { find $2 -iname "*$1*"; }
 function jgy_screen_precmd() {
   # Keep screen up-to-date on the current directory
   if [[ "$TERMCAP" =~ 'screen' ]] then
