@@ -21,6 +21,10 @@ def each_template
   end
 end
 
+def diff_files( template, installed )
+  $stdout.write `diff -U 2 -I '^# HOME-COOKING-SHA1 ' #{ template } #{ installed }`
+end
+
 def check
   each_template do | template_path, installed_path |
     file = HomeCooking::File.new( installed_path )
@@ -28,21 +32,21 @@ def check
       puts "'#{ installed_path }' is not stamped"
     elsif file.modified?
       puts "'#{ installed_path }' modified:"
-      puts `diff -U 2 #{ template_path } #{ installed_path }`
+      diff_files template_path, installed_path
     end
   end
 end
 
 def diff
   each_template do | template_path, installed_path |
-    puts `diff -U 2 #{ template_path } #{ installed_path }`
+    diff_files template_path, installed_path
   end
 end
 
-def stamp
+def stamp(all = false)
   each_template do | template_path, installed_path |
     file = HomeCooking::File.new( installed_path )
-    if ! file.stamped?
+    if all || ! file.stamped?
       file.stamp!
     end
   end
@@ -54,10 +58,15 @@ when 'check'
 when 'diff'
   diff
 when 'stamp'
-  stamp
+  all = ARGV.size > 1 && ARGV[ 1 ] == '--all'
+  stamp all
 else
   puts <<EOT
-Usage:
- $ home-cooking [check|diff|stamp]
+  Usage:
+    $ home-cooking check          diff modified files with templates
+    $ home-cooking diff           diff all files with templates
+    $ home-cooking stamp          stamp files without hash stamps
+    $ home-cooking stamp --all    (re)stamp all files
+
 EOT
 end
