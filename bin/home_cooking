@@ -33,6 +33,12 @@ def check
   end
 end
 
+def diff
+  each_template do | template_path, installed_path |
+    puts `diff -U 2 #{ template_path } #{ installed_path }`
+  end
+end
+
 def stamp
   each_template do | template_path, installed_path |
     file = HomeCooking::File.new( installed_path )
@@ -45,11 +51,13 @@ end
 case ARGV[ 0 ]
 when 'check'
   check
+when 'diff'
+  diff
 when 'stamp'
   stamp
 else
   puts <<EOT
 Usage:
- $ home-cooking [check|stamp]
+ $ home-cooking [check|diff|stamp]
 EOT
 end
