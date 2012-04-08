@@ -37,3 +37,38 @@ The above predefines the following:
 $ bin/push-install
 ```
 
+# Install locally
+Linux:
+```shell
+sudo chef-solo -c chef-solo.rb -j attributes.js -u root
+```
+
+OS X:
+```shell
+sudo chef-solo -c chef-solo.rb -j attributes.js -u root -g wheel
+```
+
+# Maintain
+
+## Check if installed files have been changed, and view diffs:
+
+```shell
+home_cooking check
+```
+
+## View diffs of all installed files compared to templates:
+
+```shell
+home_cooking diff
+```
+
+## Stamp unstamped files:
+```shell
+home_cooking stamp
+```
+
+## Restamp all files:
+```shell
+home_cooking stamp --all
+```
+
