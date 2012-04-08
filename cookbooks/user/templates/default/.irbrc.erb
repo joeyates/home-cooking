@@ -1,8 +1,19 @@
 require 'irb/completion'
 ARGV.concat [ "--prompt-mode", "simple" ] # Do not use option "--readline" - screws up line editing
-IRB.conf[:HISTORY_FILE] = "/home/joe/.irb-history"
+IRB.conf[:HISTORY_FILE] = "/home/joe/.irb_history"
 IRB.conf[:SAVE_HISTORY] = 100
-# IRB.conf[:LOAD_MODULES] = ['irb/completion', 'irb/ext/save-history']
-# IRB.conf[:LOAD_MODULES] = ['irb/completion']
 IRB.conf[:PROMPT_MODE] = :SIMPLE
+
+if ENV['RAILS_ENV']
+  # Do Rails initialization for Rails script/console
+  begin
+    require 'config/environment' 
+    ActiveRecord::Base.logger = Logger.new(STDERR) if ActiveRecord::Base
+    require 'irb/completion'
+    require 'console_app'
+    require 'console_with_helpers'
+  rescue => err
+    $stderr.puts err.inspect 
+  end
+end
 
