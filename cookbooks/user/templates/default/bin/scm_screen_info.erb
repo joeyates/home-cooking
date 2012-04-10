@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# This code is adapted from https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/git.zsh
+
+parse_git_dirty() {
+  if [[ -n $(git status -s 2> /dev/null) ]]; then
+    echo "*"
+  fi
+}
+
+ref=$(git symbolic-ref HEAD 2> /dev/null) || exit
+echo "git:${ref#refs/heads/}$(parse_git_dirty)"
+
