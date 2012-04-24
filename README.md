@@ -45,7 +45,8 @@ sudo chef-solo -c chef-solo.rb -j attributes.js -u root
 
 OS X:
 ```shell
-sudo chef-solo -c chef-solo.rb -j attributes.js -u root -g wheel
+sudo gem install --no-ri --no-rdoc chef net-ssh
+sudo chef-solo -c osx-chef-solo.rb -j attributes.js -u root -g wheel
 ```
 
 # Maintain
