@@ -30,6 +30,12 @@ end
   apply_home_cooking_sha1_stamp destination
 end
 
+directory "#{ HOME }/bin" do
+  owner node.user.name
+  group node.user.group
+  mode '0755'
+end
+
 %w(duse scm_screen_info vimx).each do | name |
   destination = "#{ HOME }/bin/#{ name }"
   template destination do
