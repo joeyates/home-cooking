@@ -40,6 +40,9 @@ $ bin/push-install
 # Install locally
 Linux:
 ```shell
+sudo apt-get install git-core zsh ruby rubygems
+sudo gem install --no-ri --no-rdoc chef net-ssh
+git clone git://github.com/joeyates/home-cooking.git .home-cooking
 sudo chef-solo -c chef-solo.rb -j attributes.js -u root
 ```
 
