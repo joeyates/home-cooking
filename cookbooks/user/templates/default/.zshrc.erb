@@ -55,8 +55,13 @@ alias ls='ls --color=auto'
 alias l='ls -l'
 alias la='ls -lA'
 alias lh='ls -lh'
+alias lt='ls -lAtr'
 alias v='vimx'
 alias g='git'
+
+if which trash-put >/dev/null ; then
+  alias rm='trash-put'
+fi
 
 # various functions
 function f() { find $2 -iname "*$1*"; }
