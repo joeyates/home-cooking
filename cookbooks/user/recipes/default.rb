@@ -48,3 +48,15 @@ end
   apply_home_cooking_sha1_stamp destination
 end
 
+git "#{ HOME }/.vim" do
+  repository 'git://github.com/joeyates/vimrc.git'
+  revision   'master'
+  action     :sync
+  user       node.user.name
+  group      node.user.name
+end
+
+link "#{ HOME }/.vimrc" do
+  to "#{ HOME }/.vim/vimrc"
+end
+
