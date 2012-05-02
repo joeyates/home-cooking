@@ -63,10 +63,10 @@ when 'stamp'
 else
   puts <<EOT
   Usage:
-    $ home-cooking check          diff modified files with templates
-    $ home-cooking diff           diff all files with templates
-    $ home-cooking stamp          stamp files without hash stamps
-    $ home-cooking stamp --all    (re)stamp all files
+    $ #{ $0 } check          diff modified files with templates
+    $ #{ $0 } diff           diff all files with templates
+    $ #{ $0 } stamp          stamp files without hash stamps
+    $ #{ $0 } stamp --all    (re)stamp all files
 
 EOT
 end
