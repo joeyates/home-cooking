@@ -59,6 +59,10 @@ alias lt='ls -lAtr'
 alias v='vimx'
 alias g='git'
 
+if which ack-grep >/dev/null ; then
+  alias a='ack-grep'
+fi
+
 if which trash-put >/dev/null ; then
   alias rm='trash-put'
 fi
