@@ -12,8 +12,7 @@ TEMPLATE_DIRECTORY = File.join( COOKBOOK_DIRECTORY, 'templates', 'default' )
 
 def each_template
   Dir.chdir( TEMPLATE_DIRECTORY )
-  Dir.glob( '*.erb', File::FNM_DOTMATCH ) do | template |
-    next if ! File.file?( template )
+  Dir.glob( '**/*.erb', File::FNM_DOTMATCH ) do | template |
     file_name      = template.gsub( %r(.erb$), '' )
     template_path  = File.join( TEMPLATE_DIRECTORY, template )
     installed_path = "#{ HOME_DIRECTORY }/#{ file_name }"
