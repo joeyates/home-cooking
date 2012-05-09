@@ -9,16 +9,16 @@ def resolve_script_path
   script_path
 end
 
-script_path   = resolve_script_path
-project_root  = File.expand_path( '..',  File.dirname( script_path ) )
-lib_directory = File.expand_path( 'lib', project_root )
-$LOAD_PATH.unshift( lib_directory )
+SCRIPT_PATH  = resolve_script_path
+PROJECT_ROOT = File.expand_path( '..',  File.dirname( SCRIPT_PATH ) )
+
+$LOAD_PATH.unshift( File.expand_path( 'lib', PROJECT_ROOT ) )
 
 require 'home_cooking'
 include HomeCooking
 
 HOME_DIRECTORY     = File.expand_path( '~' )
-COOKBOOK_DIRECTORY = File.expand_path( '../cookbooks/user', File.dirname( __FILE__ ) )
+COOKBOOK_DIRECTORY = File.join( PROJECT_ROOT, 'cookbooks', 'user'  )
 TEMPLATE_DIRECTORY = File.join( COOKBOOK_DIRECTORY, 'templates', 'default' )
 
 def each_template
