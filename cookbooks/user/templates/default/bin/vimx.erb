@@ -2,18 +2,25 @@
 
 case `uname` in
 Linux)
+  # ensure a new tab is created
   if [ $# -gt 0 ]; then
-    # ensure a new tab is created
-    gvim --servername GVIM --remote-tab-silent  "$@"
+    gvim --servername GVIM --remote-tab-silent "$@" >/dev/null 2>&1
   else
-    gvim --servername GVIM
+    if [ `gvim --serverlist | grep GVIM | wc -l` -eq 0 ]; then
+      # Launch GVim
+      gvim --servername GVIM >/dev/null 2>&1
+    fi
+  fi
+  # Set focus to GVim if wmctrl is available
+  if which wmctrl >/dev/null ; then
+    wmctrl -a GVIM
   fi
   ;;
 *)
   echo Other;
   if [ $# -gt 0 ]; then
     # ensure a new tab is created
-    mvim --servername VIM --remote-tab-silent  "$@"
+    mvim --servername VIM --remote-tab-silent "$@"
   else
     mvim --servername VIM
   fi
