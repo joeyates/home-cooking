@@ -1,6 +1,16 @@
 #!/usr/bin/env ruby
 
-lib_directory = File.expand_path( '../lib', File.dirname( __FILE__ ) )
+def resolve_script_path
+  script_path = File.expand_path( __FILE__ )
+  stat        = File.lstat( script_path )
+  if stat.symlink?
+    script_path = File.readlink( script_path )
+  end
+  script_path
+end
+
+script_path   = resolve_script_path
+lib_directory = File.expand_path( '../lib', File.dirname( script_path ) )
 $LOAD_PATH.unshift( lib_directory )
 
 require 'home_cooking'
