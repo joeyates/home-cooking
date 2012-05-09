@@ -79,6 +79,8 @@ function jgy_screen_precmd() {
 autoload add-zsh-hook
 type add-zsh-hook >/dev/null 2>&1 && add-zsh-hook precmd jgy_screen_precmd
 
+[[ -s "$HOME/bin/bundler-exec" ]] && . "$HOME/bin/bundler-exec"
+
 ########################
 # rvm
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"

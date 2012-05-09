@@ -36,7 +36,7 @@ directory "#{ HOME }/bin" do
   mode '0755'
 end
 
-%w(duse scm_screen_info vimx).each do | name |
+%w(bundler-exec duse scm_screen_info vimx).each do | name |
   destination = "#{ HOME }/bin/#{ name }"
   template destination do
     source "bin/#{ name }.erb"
