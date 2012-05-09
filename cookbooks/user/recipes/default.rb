@@ -1,4 +1,5 @@
-lib_directory = File.expand_path( '../../../lib', File.dirname( __FILE__ ) )
+project_root  = File.expand_path( File.join( '..', '..', '..' ), File.dirname( __FILE__ ) )
+lib_directory = File.expand_path( 'lib', project_root )
 $LOAD_PATH.unshift( lib_directory )
 
 require 'home_cooking'
@@ -46,6 +47,10 @@ end
     group node.user.group
   end
   apply_home_cooking_sha1_stamp destination
+end
+
+link "#{ HOME }/bin/home_cooking" do
+  to "#{ project_root }/bin/home_cooking"
 end
 
 git "#{ HOME }/.vim" do

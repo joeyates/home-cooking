@@ -10,7 +10,8 @@ def resolve_script_path
 end
 
 script_path   = resolve_script_path
-lib_directory = File.expand_path( '../lib', File.dirname( script_path ) )
+project_root  = File.expand_path( '..',  File.dirname( script_path ) )
+lib_directory = File.expand_path( 'lib', project_root )
 $LOAD_PATH.unshift( lib_directory )
 
 require 'home_cooking'
