@@ -59,6 +59,7 @@ alias lh='ls -lh'
 alias lt='ls -lAtr'
 alias v='vimx'
 alias g='git'
+alias s='screen -Rd'
 
 if which ack-grep >/dev/null ; then
   alias a='ack-grep'
@@ -66,6 +67,7 @@ fi
 
 if which trash-put >/dev/null ; then
   alias rm='trash-put'
+  alias rm-real='/bin/rm'
 fi
 
 # various functions
