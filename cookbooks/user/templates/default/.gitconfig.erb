@@ -44,13 +44,18 @@
   # create a local branch that tracks a remote branch
   bt                  = !sh -c 'git checkout --track -b $0 origin/$0 && git pull'
   branch-create       = checkout -b
-  # when was branch 1 created from branch 2?
-  branch-point = !sh -c 'git rev-list $0...$1 | tail -n 1'
   branches-containing = branch --contains
   # Merged remote branches
   branches-merged     = branch --no-color -r --merged
   # Unmerged remote branches
   branches-unmerged   = branch --no-color -r --no-merged
+
+  #########################
+  # branch difference
+  # when was branch 1 created from branch 2?
+  branch-point         = merge-base
+  # list commits exclusive to each branch
+  branch-commits       = !sh -c 'git rev-list --left-right $0...$1'
 
   #########################
   # reviewing
