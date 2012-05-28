@@ -1,4 +1,4 @@
 source :rubygems
 
-gem 'net-ssh'
+gem 'remote-session'
 
