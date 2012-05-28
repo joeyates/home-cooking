@@ -1,4 +1,5 @@
 #!/bin/sh
 
-du $1 -hm --max-depth=1 | sort -rn
+DIRECTORY=${1:-.}
+du $DIRECTORY -hm --max-depth=1 | sort -rn
 
