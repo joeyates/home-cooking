@@ -3,10 +3,12 @@
 lib_directory = File.expand_path( '../lib', File.dirname( __FILE__ ) )
 $LOAD_PATH.unshift( lib_directory )
 
+require 'highline/import'
+
 # Get info from environment/user
 host                   = ENV[ 'HOME_COOKING_HOST' ]                   || ask( 'Hostname (or IP): ' )
 existing_user          = ENV[ 'HOME_COOKING_EXISTING_USER' ]          || ask( 'Existing user: ' )
-existing_user_password = ENV[ 'HOME_COOKING_EXISTING_USER_PASSWORD' ] || ask_password( "Password for '#{ existing_user }': " )
+existing_user_password = ENV[ 'HOME_COOKING_EXISTING_USER_PASSWORD' ] || ask( "Password for '#{ existing_user }': " ) { |q| q.echo = false }
 new_user               = ENV[ 'HOME_COOKING_NEW_USER' ]               || ask( 'New user: ' )
 if ENV[ 'HOME_COOKING_NEW_USER_PASSWORD' ].nil?
   new_user_password = ask_password( "Password for '#{ new_user }': " )
