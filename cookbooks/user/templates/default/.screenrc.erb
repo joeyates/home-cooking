@@ -15,9 +15,10 @@ bind ^x
 # Use C-z instead of C-a as this makes more sense for Emacs
 escape ^zz
 
-screen -t shell   0
-screen -t console 1
-screen -t app     2
-screen -t log     3
-select 0
+screen -t log     4
+screen -t app     3
+screen -t console 2
+screen -t shell   1
+screen -t config  0
+select 1
 
