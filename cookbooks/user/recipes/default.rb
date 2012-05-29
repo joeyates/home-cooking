@@ -4,7 +4,7 @@ $LOAD_PATH.unshift( lib_directory )
 
 require 'home_cooking'
 
-HOME = "/#{ node.user.home_root }/#{ node.user.name }"
+home = "/#{ node.user.home_root }/#{ node.user.name }"
 
 def apply_home_cooking_sha1_stamp( destination )
   ruby_block "apply_home_cooking_sha1_stamp" do
@@ -21,7 +21,7 @@ def apply_home_cooking_sha1_stamp( destination )
 end
 
 %w(.gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each do | rc |
-  destination = "#{ HOME }/#{ rc }"
+  destination = "#{ home }/#{ rc }"
   template destination do
     action :create_if_missing
     mode '0644'
@@ -31,14 +31,14 @@ end
   apply_home_cooking_sha1_stamp destination
 end
 
-directory "#{ HOME }/bin" do
+directory "#{ home }/bin" do
   owner node.user.name
   group node.user.group
   mode '0755'
 end
 
 %w(bundler-exec duse scm_screen_info vimx).each do | name |
-  destination = "#{ HOME }/bin/#{ name }"
+  destination = "#{ home }/bin/#{ name }"
   template destination do
     source "bin/#{ name }.erb"
     action :create_if_missing
@@ -49,11 +49,11 @@ end
   apply_home_cooking_sha1_stamp destination
 end
 
-link "#{ HOME }/bin/home_cooking" do
+link "#{ home }/bin/home_cooking" do
   to "#{ project_root }/bin/home_cooking"
 end
 
-git "#{ HOME }/.vim" do
+git "#{ home }/.vim" do
   repository 'git://github.com/joeyates/vimrc.git'
   revision   'master'
   action     :sync
@@ -61,7 +61,9 @@ git "#{ HOME }/.vim" do
   group      node.user.name
 end
 
-link "#{ HOME }/.vimrc" do
-  to "#{ HOME }/.vim/vimrc"
+link "#{ home }/.vimrc" do
+  to "#{ home }/.vim/vimrc"
 end
+
+include_recipe 'user:rvm'
 
