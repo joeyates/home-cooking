@@ -22,12 +22,15 @@ module HomeCooking
     def create_user
       raise 'new_user not set' if @new_user.nil?
 
+      session.prompts[ '(Enter|Retype) new UNIX password' ] = @new_user[ :password ]
+      session.sudo 'groupadd admin'
       session.sudo "useradd --create-home --shell=/usr/bin/zsh --groups=admin #{ @new_user[ :username ] }"
-      session.sudo "passwd #{ @new_user[ :username ] }", { '(Enter|Retype) new UNIX password' => @new_user[ :password ] }
+      session.sudo "passwd #{ @new_user[ :username ] }"
+
       # Extra packages for user
       session.sudo 'aptitude -y install ack-grep mercurial trash-cli vim-gnome'
 
-      new_user_session = Remote::Session.new( @host, :user     => @new_user[ :username ],
+      new_user_session = Remote::Session.new( @host, :username => @new_user[ :username ],
                                                      :password => @new_user[ :password ],
                                                      :port     => @port )
       new_user_session.run 'git clone git://github.com/joeyates/home-cooking.git .home-cooking'
@@ -47,10 +50,11 @@ module HomeCooking
       return @session if @session
 
       raise 'existing user not set' if @existing_user.nil?
-
-      @session = Remote::Session.new( @host, :user     => @existing_user[ :username ],
-                                             :password => @existing_user[ :password ],
-                                             :port     => @port )
+ 
+      @session = Remote::Session.new( @host, :username      => @existing_user[ :username ],
+                                             :password      => @existing_user[ :password ],
+                                             :sudo_password => @existing_user[ :password ],
+                                             :port          => @port )
       @session
     end
 
