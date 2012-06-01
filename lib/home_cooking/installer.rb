@@ -36,7 +36,8 @@ module HomeCooking
 
     def install
       session.sudo [
-        "cd /home/#{ @new_user[ :username ] }",
+        "cd /home/#{ @new_user[ :username ] }/.home-cooking",
+        "sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb",
         'chef-solo -c chef-solo.rb -j attributes.js -u root'
       ]
     end

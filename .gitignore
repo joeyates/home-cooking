@@ -1,4 +1,5 @@
 *.swp
 .rvmrc
 Gemfile.lock
+chef-solo.rb
 
