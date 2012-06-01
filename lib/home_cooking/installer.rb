@@ -27,9 +27,6 @@ module HomeCooking
       session.sudo "useradd --create-home --groups=admin #{ @new_user[ :username ] }"
       session.sudo "passwd #{ @new_user[ :username ] }"
 
-      # Extra packages for user
-      session.sudo 'apt-get -y install ack-grep aptitude mercurial trash-cli vim-gnome'
-
       new_user_session = Remote::Session.new( @host, :username => @new_user[ :username ],
                                                      :password => @new_user[ :password ],
                                                      :port     => @port )
