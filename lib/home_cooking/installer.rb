@@ -38,6 +38,8 @@ module HomeCooking
       session.sudo [
         "cd /home/#{ @new_user[ :username ] }/.home-cooking",
         "sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb",
+        "sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js.template > attributes.js",
+        "sed -i 's/\\/usergroup\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js",
         'chef-solo -c chef-solo.rb -j attributes.js -u root'
       ]
     end

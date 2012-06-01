@@ -1,0 +1,5 @@
+{
+  "run_list": [ "recipe[user]" ],
+  "user": { "name": "username", "group": "usergroup" }
+}
+

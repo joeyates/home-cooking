@@ -20,6 +20,10 @@ def apply_home_cooking_sha1_stamp( destination )
   end
 end
 
+group 'admin' do
+  members [ node.user.name ]
+end
+
 %w(.gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each do | rc |
   destination = "#{ home }/#{ rc }"
   template destination do
