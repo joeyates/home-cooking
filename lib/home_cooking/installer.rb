@@ -22,8 +22,7 @@ module HomeCooking
     def create_user
       raise 'new_user not set' if @new_user.nil?
 
-      session.sudo 'groupadd admin'
-      session.sudo "useradd --create-home --groups=admin #{ @new_user[ :username ] }"
+      session.sudo "useradd --create-home #{ @new_user[ :username ] }"
       session.prompts[ '(Enter|Retype) new UNIX password' ] = @new_user[ :password ]
       session.sudo "passwd #{ @new_user[ :username ] }"
 
