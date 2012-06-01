@@ -15,8 +15,8 @@ module HomeCooking
     def prepare_system
       session.sudo 'apt-get update'
       # Dependencies
-      session.sudo 'apt-get -y install zsh rubygems chef git-core'
-      session.sudo 'gem install net-ssh --no-ri --no-rdoc'
+      session.sudo 'apt-get -y install git-core ruby rubygems'
+      session.sudo 'gem install net-ssh chef --no-ri --no-rdoc'
     end
 
     def create_user
@@ -24,7 +24,7 @@ module HomeCooking
 
       session.prompts[ '(Enter|Retype) new UNIX password' ] = @new_user[ :password ]
       session.sudo 'groupadd admin'
-      session.sudo "useradd --create-home --shell=/usr/bin/zsh --groups=admin #{ @new_user[ :username ] }"
+      session.sudo "useradd --create-home --groups=admin #{ @new_user[ :username ] }"
       session.sudo "passwd #{ @new_user[ :username ] }"
 
       # Extra packages for user
