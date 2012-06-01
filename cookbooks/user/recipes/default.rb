@@ -24,6 +24,12 @@ group 'admin' do
   members [ node.user.name ]
 end
 
+%w( ack-grep aptitude mercurial trash-cli vim-gnome zsh ).each do | p |
+  package p do
+    action :install
+  end
+end
+
 %w(.gemrc .gitconfig .gitexcludes .irbrc .rvmrc .screenrc .zshrc).each do | rc |
   destination = "#{ home }/#{ rc }"
   template destination do
