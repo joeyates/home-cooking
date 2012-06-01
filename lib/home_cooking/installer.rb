@@ -53,7 +53,6 @@ module HomeCooking
                                              :password      => @existing_user[ :password ],
                                              :sudo_password => @existing_user[ :password ],
                                              :port          => @port )
-      @session
     end
 
   end
