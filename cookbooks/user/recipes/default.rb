@@ -75,5 +75,5 @@ link "#{ home }/.vimrc" do
   to "#{ home }/.vim/vimrc"
 end
 
-include_recipe 'user:rvm'
+include_recipe 'user::rvm'
 
