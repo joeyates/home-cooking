@@ -16,7 +16,7 @@ module HomeCooking
       session.sudo [
         'apt-get update',
         'apt-get -y install git-core ruby rubygems', # Dependencies
-        'gem install net-ssh chef --no-ri --no-rdoc'
+        'gem install net-ssh chef remote-session --no-ri --no-rdoc'
       ]
     end
 
