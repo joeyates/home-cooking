@@ -31,14 +31,14 @@ module HomeCooking
     end
 
     def install
-      new_user_session = Remote::Session.new( @host, :username => @new_user[ :username ],
-                                                     :password => @new_user[ :password ],
-                                                     :port     => @port )
-      new_user_session.run 'git clone git://github.com/joeyates/home-cooking.git .home-cooking'
-      new_user_session.run "cd ~/.home-cooking && sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb"
-      new_user_session.run "cd ~/.home-cooking && sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js.template > attributes.js"
-      new_user_session.run "cd ~/.home-cooking && sed -i 's/\\/usergroup\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js"
-      new_user_session.close
+      s = Remote::Session.new( @host, :username => @new_user[ :username ],
+                                      :password => @new_user[ :password ],
+                                      :port     => @port )
+      s.run 'git clone git://github.com/joeyates/home-cooking.git .home-cooking'
+      s.run "cd ~/.home-cooking && sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb"
+      s.run "cd ~/.home-cooking && sed 's/\"username\"/\"#{ @new_user[ :username ] }\"/g' attributes.js.template > attributes.js"
+      s.run "cd ~/.home-cooking && sed -i 's/\"usergroup\"/\"#{ @new_user[ :username ] }\"/g' attributes.js"
+      s.close
     end
 
     def first_run
