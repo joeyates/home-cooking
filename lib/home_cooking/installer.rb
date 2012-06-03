@@ -13,32 +13,37 @@ module HomeCooking
     end
 
     def prepare_system
-      session.sudo 'apt-get update'
-      # Dependencies
-      session.sudo 'apt-get -y install git-core ruby rubygems'
-      session.sudo 'gem install net-ssh chef --no-ri --no-rdoc'
+      session.sudo [
+        'apt-get update',
+        'apt-get -y install git-core ruby rubygems', # Dependencies
+        'gem install net-ssh chef --no-ri --no-rdoc'
+      ]
     end
 
     def create_user
       raise 'new_user not set' if @new_user.nil?
 
-      session.sudo "useradd --create-home #{ @new_user[ :username ] }"
       session.prompts[ '(Enter|Retype) new UNIX password' ] = @new_user[ :password ]
-      session.sudo "passwd #{ @new_user[ :username ] }"
+      session.sudo [
+        "useradd --create-home #{ @new_user[ :username ] }",
+        "passwd #{ @new_user[ :username ] }"
+      ]
+    end
 
+    def install
       new_user_session = Remote::Session.new( @host, :username => @new_user[ :username ],
                                                      :password => @new_user[ :password ],
                                                      :port     => @port )
       new_user_session.run 'git clone git://github.com/joeyates/home-cooking.git .home-cooking'
+      new_user_session.run "cd ~/.home-cooking && sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb"
+      new_user_session.run "cd ~/.home-cooking && sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js.template > attributes.js"
+      new_user_session.run "cd ~/.home-cooking && sed -i 's/\\/usergroup\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js"
       new_user_session.close
     end
 
-    def install
+    def first_run
       session.sudo [
         "cd /home/#{ @new_user[ :username ] }/.home-cooking",
-        "sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' chef-solo.rb.template > chef-solo.rb",
-        "sed 's/\\/username\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js.template > attributes.js",
-        "sed -i 's/\\/usergroup\\//\\/#{ @new_user[ :username ] }\\//g' attributes.js",
         'chef-solo -c chef-solo.rb -j attributes.js -u root'
       ]
     end
