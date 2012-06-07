@@ -2,7 +2,7 @@ project_root  = File.expand_path( File.join( '..', '..', '..' ), File.dirname( _
 lib_directory = File.expand_path( 'lib', project_root )
 $LOAD_PATH.unshift( lib_directory )
 
-require 'home_cooking'
+require 'home-cooking'
 
 home = "/#{ node.user.home_root }/#{ node.user.name }"
 

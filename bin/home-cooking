@@ -14,7 +14,7 @@ PROJECT_ROOT = File.expand_path( '..',  File.dirname( SCRIPT_PATH ) )
 
 $LOAD_PATH.unshift( File.expand_path( 'lib', PROJECT_ROOT ) )
 
-require 'home_cooking'
+require 'home-cooking'
 include HomeCooking
 
 HOME_DIRECTORY     = File.expand_path( '~' )
