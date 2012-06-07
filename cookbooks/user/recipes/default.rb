@@ -47,7 +47,7 @@ directory "#{ home }/bin" do
   mode '0755'
 end
 
-%w(bundler-exec duse scm_screen_info vimx).each do | name |
+%w(bundler-exec duse home-cooking scm_screen_info vimx).each do | name |
   destination = "#{ home }/bin/#{ name }"
   template destination do
     source "bin/#{ name }.erb"
@@ -57,10 +57,6 @@ end
     group node.user.group
   end
   apply_home_cooking_sha1_stamp destination
-end
-
-link "#{ home }/bin/home_cooking" do
-  to "#{ project_root }/bin/home_cooking"
 end
 
 git "#{ home }/.vim" do
@@ -75,5 +71,5 @@ link "#{ home }/.vimrc" do
   to "#{ home }/.vim/vimrc"
 end
 
-include_recipe 'user::rvm'
+include_recipe 'user::rbenv'
 

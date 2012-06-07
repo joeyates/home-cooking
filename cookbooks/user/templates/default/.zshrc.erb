@@ -1,7 +1,6 @@
 #######################
 # programs
 PATH=~/bin:/usr/local/bin:$PATH
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 #######################
 # visual
@@ -80,9 +79,10 @@ function jgy_screen_precmd() {
 autoload add-zsh-hook
 type add-zsh-hook >/dev/null 2>&1 && add-zsh-hook precmd jgy_screen_precmd
 
-[[ -s "$HOME/bin/bundler-exec" ]] && . "$HOME/bin/bundler-exec"
+# rbenv
+PATH=$PATH:$HOME/.rbenv/bin # Add rbenv to PATH
+eval "$(rbenv init -)"
 
-########################
-# rvm
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+# Must be after rbenv init
+[[ -s "$HOME/bin/bundler-exec" ]] && . "$HOME/bin/bundler-exec"
 
