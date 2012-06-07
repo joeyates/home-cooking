@@ -1,5 +1,8 @@
 *.swp
-.rvmrc
-Gemfile.lock
+.bundle/
 chef-solo.rb
+Gemfile.lock
+.rbenv-version
+.rvmrc
+vendor
 
