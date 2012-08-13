@@ -9,15 +9,6 @@ This repo contains chef recipes I use to set up my personal computers.
 
 ## Dependencies
 
-```shell
-$ bundle install
-```
-
-If you do not have bundler:
-
-```shell
-$ (sudo) gem install net-ssh
-```
 
 ## Pre-define Required Values (optional)
 
@@ -46,9 +37,25 @@ $ bin/push-install
 Linux:
 ```shell
 sudo apt-get install git-core zsh ruby rubygems
-sudo gem install --no-ri --no-rdoc chef net-ssh
+sudo gem install --no-ri --no-rdoc bundler chef net-ssh
+cd ~
 git clone git://github.com/joeyates/home-cooking.git .home-cooking
-sudo chef-solo -c chef-solo.rb -j attributes.js -u root
+cd .home-cooking
+bundle --install vendor/bundle
+cp attributes.js.template attributes.js
+cp chef-solo.rb.template chef-solo.rb
+```
+
+If you do not have bundler:
+
+```shell
+$ (sudo) gem install net-ssh
+```
+
+Edit attributes.js and chef-solo-rb, inserting user name.
+
+```shell
+sudo bundle exec chef-solo -c chef-solo.rb -j attributes.js -u root
 ```
 
 OS X:
