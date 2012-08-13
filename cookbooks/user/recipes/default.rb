@@ -20,6 +20,11 @@ def apply_home_cooking_sha1_stamp( destination )
   end
 end
 
+user node.user.name do
+  action :manage
+  shell '/usr/bin/zsh'
+end
+
 group 'admin' do
   members [ node.user.name ]
 end
