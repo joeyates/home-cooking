@@ -17,7 +17,6 @@ Linux)
   fi
   ;;
 *)
-  echo Other;
   if [ $# -gt 0 ]; then
     # ensure a new tab is created
     mvim --servername VIM --remote-tab-silent "$@"
