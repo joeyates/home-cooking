@@ -27,7 +27,7 @@ installer.existing_user = { :username => existing_user, :password => existing_us
 installer.new_user      = { :username => new_user,      :password => new_user_password      }
 
 installer.prepare_system
-installer.create_user
+installer.create_user unless existing_user == new_user
 installer.install
 
 puts 'Installation complete!'
