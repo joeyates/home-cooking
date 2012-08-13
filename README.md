@@ -2,6 +2,11 @@ This repo contains chef recipes I use to set up my personal computers.
 
 # Install to a Remote Computer
 
+## Prerequisites
+
+* there must be an existing user with sudo privileges on the computer,
+* ths computer must be running an SSH server.
+
 ## Dependencies
 
 ```shell
