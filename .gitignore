@@ -1,8 +1,8 @@
 *.swp
+attributes.js
 .bundle/
 chef-solo.rb
 Gemfile.lock
 .rbenv-version
-.rvmrc
 vendor
 
