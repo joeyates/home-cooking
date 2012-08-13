@@ -15,6 +15,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 setopt INC_APPEND_HISTORY         # add new items as soon as they are entered
 setopt HIST_IGNORE_ALL_DUPS       # when adding commands, remove previous occurences
+setopt HIST_IGNORE_SPACE          # when saving history, skip commands preceded by a space
 
 #######################
 # various
@@ -69,7 +70,13 @@ if which trash-put >/dev/null ; then
 fi
 
 # various functions
-function f() { find $2 -not -wholename '*/.git/*' -not -name '*.pyc' -iname "*$1*"; }
+function f() {
+  find $2 -not -wholename '*/.git/*' \
+          -not -wholename '*/vendor/bundle/*' \
+          -not -name '*.pyc' \
+          -wholename "*$1*";
+}
+
 function jgy_screen_precmd() {
   # Keep screen up-to-date on the current directory
   if [[ "$TERMCAP" =~ 'screen' ]] then
