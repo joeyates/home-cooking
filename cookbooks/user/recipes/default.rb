@@ -64,17 +64,6 @@ end
   apply_home_cooking_sha1_stamp destination
 end
 
-git "#{ home }/.vim" do
-  repository 'git://github.com/joeyates/vimrc.git'
-  revision   'master'
-  action     :sync
-  user       node.user.name
-  group      node.user.name
-end
-
-link "#{ home }/.vimrc" do
-  to "#{ home }/.vim/vimrc"
-end
-
 include_recipe 'user::rbenv'
+include_recipe 'user::vim'
 
