@@ -29,7 +29,7 @@ group 'admin' do
   members [ node.user.name ]
 end
 
-%w( ack-grep aptitude curl mercurial screen trash-cli vim-gnome zsh ).each do | p |
+%w( ack-grep aptitude curl htop mercurial screen trash-cli vim-gnome zsh ).each do | p |
   package p do
     action :install
   end
