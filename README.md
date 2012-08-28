@@ -41,7 +41,7 @@ sudo gem install --no-ri --no-rdoc bundler chef net-ssh
 cd ~
 git clone git://github.com/joeyates/home-cooking.git .home-cooking
 cd .home-cooking
-bundle --install vendor/bundle
+bundle install --path vendor/bundle
 cp attributes.js.template attributes.js
 cp chef-solo.rb.template chef-solo.rb
 ```
