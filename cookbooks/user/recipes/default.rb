@@ -35,7 +35,7 @@ end
   end
 end
 
-%w(.gemrc .gitconfig .gitexcludes .irbrc .screenrc .zshrc).each do | rc |
+%w(.gemrc .gitconfig .gitexcludes .irbrc .rspec .screenrc .zshrc).each do | rc |
   destination = "#{ home }/#{ rc }"
   template destination do
     action :create_if_missing
