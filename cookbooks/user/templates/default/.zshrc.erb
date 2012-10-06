@@ -88,8 +88,10 @@ autoload add-zsh-hook
 type add-zsh-hook >/dev/null 2>&1 && add-zsh-hook precmd jgy_screen_precmd
 
 # rbenv
-PATH=$PATH:$HOME/.rbenv/bin # Add rbenv to PATH
-eval "$(rbenv init -)"
+if test -f '/home/joe/.rbenv/bin/rbenv' ; then
+  PATH=$PATH:$HOME/.rbenv/bin # Add rbenv to PATH
+  eval "$(rbenv init -)"
+fi
 
 # Must be after rbenv init
 [[ -s "$HOME/bin/bundler-exec" ]] && . "$HOME/bin/bundler-exec"
