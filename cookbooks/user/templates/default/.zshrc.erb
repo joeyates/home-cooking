@@ -45,6 +45,9 @@ compinit
 # correction
 setopt correct                    # try to correct misspelt commands
 
+# globbing
+setopt no_nomatch                 # if glob expasion results in 0 results, don't give an error (useful for scp remote:*)
+
 ########################
 # source computer-specific configurations
 if [ ${#$(print ~/.zshrc_*(.N))} -gt 0 ]; then
