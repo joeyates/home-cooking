@@ -42,6 +42,9 @@ zstyle :compinstall filename $HOME/.zshrc
 autoload -Uz compinit
 compinit
 
+# correction
+setopt correct                    # try to correct misspelt commands
+
 ########################
 # source computer-specific configurations
 if [ ${#$(print ~/.zshrc_*(.N))} -gt 0 ]; then
