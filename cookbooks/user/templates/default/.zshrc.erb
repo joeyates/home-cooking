@@ -47,12 +47,6 @@ setopt correct                    # try to correct misspelt commands
 setopt no_nomatch                 # if glob expasion results in 0 results, don't give an error (useful for scp remote:*)
 
 ########################
-# source computer-specific configurations
-if [ ${#$(print ~/.zshrc_*(.N))} -gt 0 ]; then
-  for i in ~/.zshrc_*(.); . $i
-fi
-
-########################
 # aliases
 alias ls='ls --color=auto'
 alias l='ls -l'
@@ -64,6 +58,13 @@ alias v='vimx'
 alias g='git'
 alias s='screen -Rd'
 alias rpc='bundle exec pry -r ./config/environment'
+alias deactivate_virtualenv="type deactivate >/dev/null && deactivate"
+
+########################
+# source computer-specific configurations
+if [ ${#$(print ~/.zshrc_*(.N))} -gt 0 ]; then
+  for i in ~/.zshrc_*(.); . $i
+fi
 
 if which ack-grep >/dev/null ; then
   alias a='ack-grep'
