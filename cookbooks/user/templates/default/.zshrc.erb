@@ -83,6 +83,10 @@ function f() {
           -wholename "*$1*";
 }
 
+function jgy_timestamp {
+  date +%Y%m%d%H%M%S
+}
+
 function jgy_screen_precmd() {
   # Keep screen up-to-date on the current directory
   if [[ "$TERMCAP" =~ 'screen' ]] then
