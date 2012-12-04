@@ -43,7 +43,7 @@
   b                   = branch
   # create a local branch that tracks a remote branch
   bt                  = !sh -c 'git checkout --track -b $0 origin/$0 && git pull'
-  branch-create       = checkout -b
+  bc                  = checkout -b
   branches-containing = branch --contains
   # Merged remote branches
   branches-merged     = branch --no-color -r --merged
@@ -73,8 +73,8 @@
   a                   = add --interactive
   cm                  = commit
   cmm                 = commit -m
+  ca                  = commit --amend
   commit-all          = commit . -m
-  unstage             = reset HEAD --
 
   #########################
   # status
