@@ -2,7 +2,7 @@
 # bundler-exec
 # From https://github.com/gma/bundler-exec via https://github.com/robbyrussell/oh-my-zsh
 
-bundled_commands=(cap gem guard irb pry rackup rails rake rspec ruby unicorn)
+bundled_commands=(cap cucumber gem guard irb pry rackup rails rake rspec ruby showoff unicorn)
 
 _bundler-installed() {
   which bundle > /dev/null 2>&1
@@ -12,7 +12,7 @@ _within-bundled-project() {
   local check_dir=$PWD
   while [ $check_dir != "/" ]; do
     [ -f "$check_dir/Gemfile" ] && return
-check_dir="$(dirname $check_dir)"
+    check_dir="$(dirname $check_dir)"
   done
   false
 }
