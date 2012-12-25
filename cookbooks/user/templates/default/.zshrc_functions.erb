@@ -1,0 +1,32 @@
+# f - everyday find
+# usage:
+#   f filename_fragment [path]
+# skips git directories and python compiled files
+_exclude_matches=(bundle .git *.pyc)
+_excludes=''
+for _match in $_exclude_matches; do
+  _excludes="${_excludes}-name '$_match' -prune -o "
+done
+
+eval "
+function jgy_everyday_find() {
+  find \$2 \
+    $_excludes \
+    -name \"*\$1*\"    \
+    -print;
+}
+"
+unset _exclude_matches _excludes _match
+alias f=jgy_everyday_find
+
+function jgy_timestamp {
+  date +%Y%m%d%H%M%S
+}
+
+function jgy_screen_precmd() {
+  # Keep screen up-to-date on the current directory
+  if [[ "$TERMCAP" =~ 'screen' ]] then
+    screen -X chdir "`pwd`"
+  fi
+}
+

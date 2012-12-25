@@ -76,26 +76,12 @@ if which trash-put >/dev/null ; then
   alias rm-real='/bin/rm'
 fi
 
-# various functions
-function f() {
-  find $2 -not -wholename '*/.git/*' \
-          -not -wholename '*/vendor/bundle/*' \
-          -not -name '*.pyc' \
-          -wholename "*$1*";
-}
-
-function jgy_timestamp {
-  date +%Y%m%d%H%M%S
-}
-
-function jgy_screen_precmd() {
-  # Keep screen up-to-date on the current directory
-  if [[ "$TERMCAP" =~ 'screen' ]] then
-    screen -X chdir "`pwd`"
-  fi
-}
 autoload add-zsh-hook
-type add-zsh-hook >/dev/null 2>&1 && add-zsh-hook precmd jgy_screen_precmd
+if type trash-put >/dev/null 2>&1 ; then
+  if type add-zsh-hook >/dev/null 2>&1 ; then
+    add-zsh-hook precmd jgy_screen_precmd
+  fi
+fi
 
 # rbenv
 if test -f '/home/joe/.rbenv/bin/rbenv' ; then
